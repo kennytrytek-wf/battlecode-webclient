@@ -305,7 +305,7 @@
         ///////////////////////////////////////////////////////
 
         private function drawEnergonBar():void {
-            if (!RenderConfiguration.showEnergon() && getType() != RobotType.HQ)
+            if (!RenderConfiguration.showEnergon())
                 return;
 
             var ratio:Number = energon / maxEnergon;
@@ -433,12 +433,7 @@
         }
 
         private function getUnitScale(type:String):Number {
-            switch (type) {
-                case RobotType.HQ:
-                    return 2.0;
-                default:
-                    return 1.0;
-            }
+            return 1.0;
         }
 
         private function getUnitOffset(type:String):Number {

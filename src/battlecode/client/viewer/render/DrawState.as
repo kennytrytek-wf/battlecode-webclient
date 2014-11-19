@@ -217,12 +217,6 @@
         override public function visitDeathSignal(s:DeathSignal):* {
             var robot:DrawRobot = getRobot(s.getRobotID());
             robot.destroyUnit();
-
-            if (robot.getType() == RobotType.HQ) {
-                var hq:DrawRobot = robot.getTeam() == Team.A ? hqA : hqB;
-                hq.destroyUnit();
-            }
-
             unitCounts[robot.getTeam()][robot.getType()]--;
         }
 
@@ -233,11 +227,6 @@
             for (var i:uint; i < robotIDs.length; i++) {
                 var robot:DrawRobot = getRobot(robotIDs[i]);
                 robot.setEnergon(energon[i]);
-
-                if (robot.getType() == RobotType.HQ) {
-                    var hq:DrawRobot = robot.getTeam() == Team.A ? hqA : hqB;
-                    hq.setEnergon(energon[i]);
-                }
             }
         }
 
@@ -258,12 +247,6 @@
         override public function visitSpawnSignal(s:SpawnSignal):* {
             var robot:DrawRobot = new DrawRobot(s.getRobotID(), s.getRobotType(), s.getTeam());
             robot.setLocation(s.getLocation());
-
-            if (s.getRobotType() == RobotType.HQ) {
-                if (s.getTeam() == Team.A) hqA = robot.clone() as DrawRobot;
-                if (s.getTeam() == Team.B) hqB = robot.clone() as DrawRobot;
-            }
-
             groundRobots[s.getRobotID()] = robot;
             unitCounts[s.getTeam()][s.getRobotType()]++;
         }

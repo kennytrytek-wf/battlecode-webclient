@@ -30,22 +30,30 @@
         public static const EXIT_FULLSCREEN_ICON:Class;
 
         // unit avatars
-        [Embed('/img/units/hq1.png')]
-        public static const HQ_A:Class;
-        [Embed('/img/units/hq2.png')]
-        public static const HQ_B:Class;
+        [Embed('/img/units/archon1.png')]
+        public static const ARCHON_A:Class;
+        [Embed('/img/units/archon2.png')]
+        public static const ARCHON_B:Class;
         [Embed('/img/units/soldier1.png')]
         public static const SOLDIER_A:Class;
         [Embed('/img/units/soldier2.png')]
         public static const SOLDIER_B:Class;
-        [Embed('/img/units/noisetower1.png')]
-        public static const NOISETOWER_A:Class;
-        [Embed('/img/units/noisetower2.png')]
-        public static const NOISETOWER_B:Class;
-        [Embed('/img/units/pastr1.png')]
-        public static const PASTR_A:Class;
-        [Embed('/img/units/pastr2.png')]
-        public static const PASTR_B:Class;
+        [Embed('/img/units/scout1.png')]
+        public static const SCOUT_A:Class;
+        [Embed('/img/units/scout2.png')]
+        public static const SCOUT_B:Class;
+        [Embed('/img/units/scorcher1.png')]
+        public static const SCORCHER_A:Class;
+        [Embed('/img/units/scorcher2.png')]
+        public static const SCORCHER_B:Class;
+        [Embed('/img/units/tower1.png')]
+        public static const TOWER_A:Class;
+        [Embed('/img/units/tower2.png')]
+        public static const TOWER_B:Class;
+        [Embed('/img/units/disrupter1.png')]
+        public static const DISRUPTER_A:Class;
+        [Embed('/img/units/disrupter2.png')]
+        public static const DISRUPTER_B:Class;
 
         // explosions images
         [Embed('/img/explode/explode64_f01.png')]
