@@ -26,6 +26,8 @@
 
         function visitSpawnSignal(s:SpawnSignal):*;
 
+        function visitNodeConnectionSignal(s:NodeConnectionSignal):*;
+
     }
 
 }

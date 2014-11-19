@@ -24,6 +24,7 @@
         private var neutralTeams:Array; // int[][]
 
         // immutables
+        private var connections:Array;
         private var map:GameMap;
         private var origin:MapLocation;
 
@@ -83,6 +84,10 @@
 
         public function getNeutralTeams():Array {
             return neutralTeams;
+        }
+
+        public function getConnections():Array {
+            return connections;
         }
 
         ///////////////////////////////////////////////////////
@@ -257,6 +262,10 @@
 
         override public function visitNeutralsTeamSignal(s:NeutralsTeamSignal):* {
             neutralTeams = s.getTeams();
+        }
+
+        override public function visitNodeConnectionSignal(s:NodeConnectionSignal):* {
+            connections = s.getConnections();
         }
 
     }

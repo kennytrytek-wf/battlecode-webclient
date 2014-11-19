@@ -52,6 +52,10 @@
         public function visitSpawnSignal(s:SpawnSignal):* {
             return null;
         }
+
+        public function visitNodeConnectionSignal(s:NodeConnectionSignal):* {
+            return null;
+        }
     }
 
 }

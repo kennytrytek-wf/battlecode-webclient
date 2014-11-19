@@ -22,6 +22,7 @@
         private var mapCanvas:UIComponent;
         private var gridCanvas:UIComponent;
         private var neutralCanvas:UIComponent;
+        private var connectionCanvas:UIComponent;
         private var groundUnitCanvas:UIComponent;
 
         // optimizations for caching
@@ -38,14 +39,17 @@
             this.mapCanvas = new UIComponent();
             this.gridCanvas = new UIComponent();
             this.neutralCanvas = new UIComponent();
+            this.connectionCanvas = new UIComponent();
             this.groundUnitCanvas = new UIComponent();
 
             this.mapCanvas.cacheAsBitmap = true;
             this.gridCanvas.cacheAsBitmap = true;
+            this.connectionCanvas.cacheAsBitmap = true;
 
             this.addChild(mapCanvas);
             this.addChild(gridCanvas);
             this.addChild(neutralCanvas);
+            this.addChild(connectionCanvas);
             this.addChild(groundUnitCanvas);
         }
 
@@ -77,7 +81,8 @@
             drawMap();
             drawGridlines();
             drawUnits();
-            drawCows();
+            drawConnections();
+            //drawCows();
 
             var o:DrawObject;
 
@@ -131,9 +136,27 @@
             this.gridCanvas.graphics.clear();
             for (i = 0; i < map.getHeight(); i++) {
                 for (j = 0; j < map.getWidth(); j++) {
-                    this.gridCanvas.graphics.lineStyle(.5, 0x999999, 0.3);
+                    this.gridCanvas.graphics.lineStyle(0.5, 0x999999, 0.3);
                     this.gridCanvas.graphics.drawRect(j * getGridSize(), i * getGridSize(), getGridSize(), getGridSize());
                 }
+            }
+        }
+
+        private function drawConnections():void {
+            var origin:MapLocation = controller.match.getMap().getOrigin();
+            var origX:int = origin.getX();
+            var origY:int = origin.getY();
+            var conns:Array = controller.currentState.getConnections();
+            if (!conns) {
+                return;
+            }
+            this.connectionCanvas.graphics.clear();
+            this.connectionCanvas.graphics.lineStyle(5, 0x000000, 0.8);
+            for (var i:int = 0; i < conns.length; i++) {
+                var ml1:MapLocation = conns[i][0];
+                var ml2:MapLocation = conns[i][1];
+                this.connectionCanvas.graphics.moveTo((ml1.getX() - origX) * getGridSize(), (ml1.getY() - origY) * getGridSize());
+                this.connectionCanvas.graphics.lineTo((ml2.getX() - origX) * getGridSize(), (ml2.getY() - origY) * getGridSize());
             }
         }
 
@@ -201,6 +224,7 @@
             gridCanvas.visible = RenderConfiguration.showGridlines();
             groundUnitCanvas.visible = RenderConfiguration.showGround();
             neutralCanvas.visible = RenderConfiguration.showCows();
+            connectionCanvas.visible = true;
         }
 
         private function onRoundChange(e:MatchEvent):void {

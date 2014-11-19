@@ -37,6 +37,8 @@
                     return createShieldChangeSignal(signalXML);
                 case "sig.SpawnSignal":
                     return createSpawnSignal(signalXML);
+                case "sig.NodeConnectionSignal":
+                    return createNodeConnectionSignal(signalXML);
             }
             return null;
         }
@@ -150,6 +152,20 @@
             var type:String = signalXML.attribute("type").toString();
             var team:String = signalXML.attribute("team").toString();
             return new SpawnSignal(robotID, parentID, loc, type, team);
+        }
+
+        public static function createNodeConnectionSignal(signalXML:XML):NodeConnectionSignal {
+            var connections:XMLList = signalXML.child('connections');
+            var locationArrays:XMLList = connections.elements('battlecode.common.MapLocation-array');
+            var nodes:Array = new Array();
+            for (var i:int = 0; i < locationArrays.length(); i++) {
+                var mapLocations:XMLList = locationArrays[i].elements('battlecode.common.MapLocation');
+                var l1:Array = mapLocations[0].text()[0].split(',');
+                var l2:Array = mapLocations[1].text()[0].split(',');
+                nodes.push(new Array(new MapLocation(parseInt(l1[0]), parseInt(l1[1])),
+                                     new MapLocation(parseInt(l2[0]), parseInt(l2[1]))));
+            }
+            return new NodeConnectionSignal(nodes);
         }
     }
 
