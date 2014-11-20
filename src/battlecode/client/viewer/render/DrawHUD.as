@@ -19,7 +19,6 @@
         private var team:String;
 
         private var pointLabel:Label;
-        private var hqBox:DrawHUDHQ;
         private var researchBoxes:Array;
         private var unitBoxes:Array;
         private var winMarkerCanvas:Canvas;
@@ -58,9 +57,6 @@
 
             addChild(pointLabel);
 
-            hqBox = new DrawHUDHQ();
-            addChild(hqBox);
-
             unitBoxes = new Array();
             for each (var unit:String in RobotType.ground()) {
                 var unitBox:DrawHUDUnit = new DrawHUDUnit(unit, team);
@@ -75,23 +71,20 @@
             addChild(winMarkerCanvas);
 
             repositionWinMarkers();
-            resizeHQBox();
             drawUnitCounts();
         }
 
         private function onRoundChange(e:MatchEvent):void {
-            var points:Number = controller.currentState.getPoints(team);
-            pointLabel.text = formatter.format(points / 1000000) + "GG";
+            // var points:Number = controller.currentState.getPoints(team);
+            // pointLabel.text = formatter.format(points / 1000000) + "GG";
 
             if (e.currentRound <= lastRound) {
-                hqBox.removeRobot();
                 drawWinMarkers();
             }
             lastRound = e.currentRound;
 
             var hq:DrawRobot = controller.currentState.getHQ(team);
             if (hq && hq.isAlive()) {
-                hqBox.setRobot(hq);
                 hq.draw();
             }
 
@@ -106,20 +99,11 @@
         }
 
         private function onMatchChange(e:MatchEvent):void {
-            pointLabel.text = "0GG";
-            hqBox.removeRobot();
             drawWinMarkers();
         }
 
-        private function resizeHQBox():void {
-            var boxSize:Number = Math.min(100, (height - 70 - pointLabel.height - winMarkerCanvas.height) - 20);
-            hqBox.resize(boxSize);
-            hqBox.x = (180 - boxSize) / 2;
-            hqBox.y = 50;
-        }
-
         private function drawUnitCounts():void {
-            var top:Number = hqBox.height + hqBox.y + 10;
+            var top:Number = pointLabel.height + pointLabel.y + 10;
             var i:uint = 0;
             for each (var unitBox:DrawHUDUnit in unitBoxes) {
                 unitBox.x = (180 - unitBox.width * 3) / 2 + (i % 3) * unitBox.width;
@@ -156,7 +140,6 @@
 
         private function onResize(e:ResizeEvent):void {
             repositionWinMarkers();
-            resizeHQBox();
             drawUnitCounts();
         }
 

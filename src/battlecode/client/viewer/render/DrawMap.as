@@ -21,7 +21,6 @@
         // various canvases for layering and quick toggling of features
         private var mapCanvas:UIComponent;
         private var gridCanvas:UIComponent;
-        private var neutralCanvas:UIComponent;
         private var connectionCanvas:UIComponent;
         private var groundUnitCanvas:UIComponent;
 
@@ -38,7 +37,6 @@
 
             this.mapCanvas = new UIComponent();
             this.gridCanvas = new UIComponent();
-            this.neutralCanvas = new UIComponent();
             this.connectionCanvas = new UIComponent();
             this.groundUnitCanvas = new UIComponent();
 
@@ -48,7 +46,6 @@
 
             this.addChild(mapCanvas);
             this.addChild(gridCanvas);
-            this.addChild(neutralCanvas);
             this.addChild(connectionCanvas);
             this.addChild(groundUnitCanvas);
         }
@@ -82,7 +79,6 @@
             drawGridlines();
             drawUnits();
             drawConnections();
-            //drawCows();
 
             var o:DrawObject;
 
@@ -132,7 +128,6 @@
         private function drawGridlines():void {
             var i:uint, j:uint;
             var map:GameMap = controller.match.getMap();
-
             this.gridCanvas.graphics.clear();
             for (i = 0; i < map.getHeight(); i++) {
                 for (j = 0; j < map.getWidth(); j++) {
@@ -150,32 +145,14 @@
             if (!conns) {
                 return;
             }
+
             this.connectionCanvas.graphics.clear();
-            this.connectionCanvas.graphics.lineStyle(5, 0x000000, 0.8);
+            this.connectionCanvas.graphics.lineStyle(4, 0x000000, 0.7);
             for (var i:int = 0; i < conns.length; i++) {
                 var ml1:MapLocation = conns[i][0];
                 var ml2:MapLocation = conns[i][1];
-                this.connectionCanvas.graphics.moveTo((ml1.getX() - origX) * getGridSize(), (ml1.getY() - origY) * getGridSize());
-                this.connectionCanvas.graphics.lineTo((ml2.getX() - origX) * getGridSize(), (ml2.getY() - origY) * getGridSize());
-            }
-        }
-
-        private function drawCows():void {
-            var cows:Array = controller.currentState.getNeutralDensities();
-            var cowsTeams:Array = controller.currentState.getNeutralTeams();
-            var i:uint, j:uint, team:String;
-
-            this.neutralCanvas.graphics.clear();
-            var g:Number = getGridSize();
-            for (i = 0; i < cows.length; i++) {
-                for (j = 0; j < cows[i].length; j++) {
-                    var density:Number = cows[i][j] / 8000.0;
-                    var color:Number = Team.cowColor(Team.valueOf(cowsTeams[i][j]));
-                    this.neutralCanvas.graphics.lineStyle(1, color, 0.8);
-                    this.neutralCanvas.graphics.beginFill(color, 0.4);
-                    this.neutralCanvas.graphics.drawCircle((i + .5) * g, (j + .5) * g, g * Math.sqrt(density) / 2);
-                    this.neutralCanvas.graphics.endFill();
-                }
+                this.connectionCanvas.graphics.moveTo((ml1.getX() - origX) * getGridSize() + getGridSize() / 2, (ml1.getY() - origY) * getGridSize() + getGridSize() / 2);
+                this.connectionCanvas.graphics.lineTo((ml2.getX() - origX) * getGridSize() + getGridSize() / 2, (ml2.getY() - origY) * getGridSize() + getGridSize() / 2);
             }
         }
 
@@ -223,7 +200,6 @@
         private function onEnterFrame(e:Event):void {
             gridCanvas.visible = RenderConfiguration.showGridlines();
             groundUnitCanvas.visible = RenderConfiguration.showGround();
-            neutralCanvas.visible = RenderConfiguration.showCows();
             connectionCanvas.visible = true;
         }
 
@@ -232,7 +208,7 @@
                 drawUnits();
             }
             updateUnits();
-            drawCows();
+            drawConnections();
 
             lastRound = e.currentRound;
 
